@@ -2,6 +2,7 @@ from flask import Flask, request, redirect
 import twilio.twiml
 from phue import Bridge
 import yaml
+import requests
 
 # Import tokens and settings from configuration file
 conf = open('config.yaml')
@@ -31,6 +32,11 @@ def hue_change(colour_name):
     if colour_name == "RESET" or colour_name == "WHITE":
         hue.set_light(1, 'hue', 14922)
         print("Resetting light")
+    if colour_name == "LIFTOFF":
+        print("Trying to lift off!")
+        r = requests.get('http://140.184.8.29:8866/liftoff')
+        print(r.status_code)
+        print("Sent the liftoff command")
     return
 
 @app.route("/", methods=['GET', 'POST'])
